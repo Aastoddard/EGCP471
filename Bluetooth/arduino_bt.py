@@ -7,14 +7,20 @@ from time import sleep
 bluetoothSerial = serial.Serial("/dev/rfcomm1", baudrate=9600)
 
 count = None
-escape = raw_input()
+flag = 0
 while count == None:
     try:
-        if escape == 'q':
-            break
-        else:
-            count = bluetoothSerial.readline()
+        count = int(raw_input("Send a value greater than zero to handshake. "))
     except:
         pass
 
-print("Pi code exited with count as: ", count)
+bluetoothSerial.write(str(count))
+flag = bluetoothSerial.readline()
+
+print flag
+
+try:
+    if int(flag) == 1:
+        print "Our flag was converted to an INT"
+finally:
+    print "Our flag couldn't be converted."
